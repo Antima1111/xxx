@@ -1,588 +1,516 @@
 # xxx
-import turtle 
-t = turtle.Turtle() t.speed(0) 
- 
-t.penup() 
-t.goto(-300, 0) 
-t.pendown() 
-t.forward(600) 
-t.write("  X", font=("Arial", 12, "bold")) 
- 
-t.penup() 
-t.goto(0, -300) 
-t.setheading(90) 
-t.pendown() 
-t.forward(600) 
-t.write("  Y", font=("Arial", 12, "bold")) 
-t.hideturtle() 
-turtle.done() 
- 
-PRACTICAL NO. 2-- SCREEN DIVISION & HUT DRAWING 
-a)	Divide the screen into four regions and draw shapes 
-b)	Draw a simple hut 
- 
-PROGRAM (PART A) 
-import turtle
-t = turtle.Turtle()
-t.speed(0)
+<html>  index.html
+<body>
+<form action="NewServlet1" method="post">
 
-# Divide screen
-t.penup()
-t.goto(-300, 0)
-t.pendown()
-t.forward(600)
+Number 1: <input type="text" name="n1"><br><br>
+Number 2: <input type="text" name="n2"><br><br>
 
-t.penup()
-t.goto(0, -300)
-t.setheading(90)
-t.pendown()
-t.forward(600)
+Operation:
+<select name="op">
+<option value="+">+</option>
+<option value="-">-</option>
+<option value="*">*</option>
+<option value="/">/</option>
+</select>
 
-# Top-left Circle
-t.penup()
-t.goto(-150, 100)
-t.pendown()
-t.circle(50)
+<br><br>
+<input type="submit" value="Calculate">
 
-t.penup()
-t.goto(-190, 170)
-t.write("Circle")
+</form>
+</body>
+</html>  NewServlet1.java
 
-# Top-right Rectangle
-t.penup()
-t.goto(100, 100)
-t.pendown()
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-for i in range(2):
-    t.forward(100)
-    t.left(90)
-    t.forward(60)
-    t.left(90)
+@WebServlet("/NewServlet1")
 
-t.penup()
-t.goto(110, 170)
-t.write("Rectangle")
+public class NewServlet1 extends HttpServlet {
 
-# Bottom-left Ellipse
-t.penup()
-t.goto(-200, -100)
-t.pendown()
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
 
-for i in range(2):
-    t.circle(60, 90)
-    t.circle(30, 90)
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
 
-t.penup()
-t.goto(-230, -30)
-t.write("Ellipse")
+int n1 = Integer.parseInt(request.getParameter("n1"));
+int n2 = Integer.parseInt(request.getParameter("n2"));
+String op = request.getParameter("op");
 
-# Bottom-right Half Ellipse
-t.penup()
-t.goto(150, -100)
-t.setheading(0)
-t.pendown()
-t.circle(60, 180)
+int result = 0;
 
-t.penup()
-t.goto(120, -30)
-t.write("Half Ellipse")
+if(op.equals("+"))
+    result = n1 + n2;
+else if(op.equals("-"))
+    result = n1 - n2;
+else if(op.equals("*"))
+    result = n1 * n2;
+else if(op.equals("/"))
+    result = n1 / n2;
 
-t.hideturtle()
-turtle.done()
+out.println("<html>");
+out.println("<head><title>Result</title></head>");
+out.println("<body>");
+out.println("<h2>Result is: " + result + "</h2>");
+out.println("</body>");
+out.println("</html>");
 
-PROGRAM (PART B – HUT) 
-import turtle
-t = turtle.Turtle()
-t.speed(0)
-# Base
-t.penup()
-t.goto(-100, -100)
-t.pendown()
-for i in range(4):
-    t.forward(200)
-    t.left(90)
-# Roof
-t.goto(-100, 100)
-t.goto(0, 200)
-t.goto(100, 100)
-t.goto(-100, 100)
-# Door
-t.penup()
-t.goto(-30, -100)
-t.pendown()
-t.setheading(90)
-t.forward(80)
-t.right(90)
-t.forward(60)
-t.right(90)
-t.forward(80)
-t.hideturtle()
-turtle.done()
+}
+}
+ 
+<html>  index.html
+<head>
+<title>Login Page</title>
+</head>
 
- PRACTICAL NO. 3 – BASIC SHAPES DDA Algorithm
-import turtle
-t = turtle.Turtle()
-t.speed(0)
-def dda(x1, y1, x2, y2):
-    dx = x2 - x1
-    dy = y2 - y1
-    steps = int(max(abs(dx), abs(dy)))
-    xinc = dx / steps
-    yinc = dy / steps
-    x = x1
-    y = y1
-    t.penup()
-    t.goto(x, y)
-    t.pendown()
-    for i in range(steps):
-        x = x + xinc
-        y = y + yinc
-        t.goto(x, y)
+<body>
 
-dda(-100, -50, 150, 100)
-turtle.done() 
- Part B – Bresenham’s Line Drawing Algorithm 
-import turtle
-t = turtle.Turtle()
-t.speed(0)
+<h2>Login Form</h2>
 
-def bresenham_line(x1, y1, x2, y2):
-    dx = x2 - x1
-    dy = y2 - y1
-    x = x1
-    y = y1
-    p = 2 * dy - dx
-    t.penup()
-    t.goto(x, y)
-    t.pendown()
+<form action="LoginServlet" method="post">
 
-    for i in range(dx):
-        if p >= 0:
-            y = y + 1
-            p = p + 2 * (dy - dx)
-        else:
-            p = p + 2 * dy
-        x = x + 1
-        t.goto(x, y)
-bresenham_line(-100, -50, 150, 100)
-turtle.done() 
- 
- PRACTICAL NO. 5 – MIDPOINT CIRCLE 
-import turtle
-t = turtle.Turtle()
-t.speed(0)
+Username:
+<input type="text" name="username"><br><br>
 
-r = 100
-x = 0
-y = r
-p = 1 - r
+Password:
+<input type="password" name="password"><br><br>
 
-while x <= y:
+<input type="submit" value="Login">
 
-    points = [(x,y), (-x,y), (x,-y), (-x,-y),
-              (y,x), (-y,x), (y,-x), (-y,-x)]
+</form>
 
-    for px, py in points:
-        t.penup()
-        t.goto(px, py)
-        t.pendown()
-        t.dot(3)
+</body>
+</html>       LoginServlet.java
 
-    x = x + 1
+import java.io.IOException;
+import java.io.PrintWriter;
 
-    if p < 0:
-        p = p + 2*x + 1
-    else:
-        y = y - 1
-        p = p + 2*(x - y) + 1
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-turtle.done()
-PRACTICAL NO. 6 – 2D TRANSFORMATIONS 
- 
-A------Scaling  
-import turtle
-t = turtle.Turtle()
-triangle = [(-50, -50), (50, -50), (0, 50)]
-for p in triangle + [triangle[0]]:
-    t.goto(p)
-t.color("red")
-Sx, Sy = 2, 2
-scaled = [(x * Sx, y * Sy) for x, y in triangle]
-for p in scaled + [scaled[0]]:
-    t.goto(p)
-turtle.done()
+@WebServlet("/LoginServlet")
 
-B-----Translation 
+public class LoginServlet extends HttpServlet {
 
-import turtle
-t = turtle.Turtle()
-triangle = [(-50, -50), (50, -50), (0, 50)]
-for p in triangle + [triangle[0]]:
-    t.goto(p)
-t.color("green")
-Tx, Ty = 100, 70
-move = [(x + Tx, y + Ty) for x, y in triangle]
-for p in move + [move[0]]:
-    t.goto(p)
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
 
-turtle.done() 
-PRACTICAL NO. 7 – 2D ROTATION 
-import turtle
-t = turtle.Turtle()
-t.speed(3)
-# Draw original triangle
-for _ in range(3):
-    t.forward(100)
-    t.left(120)
-# Rotate the turtle by 45 degrees
-t.left(45)
-# Change color
-t.color("red")
-# Draw rotated triangle
-for _ in range(3):
-    t.forward(100)
-    t.left(120)
-turtle.done() 
-PRACTICAL NO. 8 – LINE CLIPPING 
-import turtle
-xmin, xmax = -100, 100
-ymin, ymax = -50, 100
-t = turtle.Turtle()
-# Draw window
-t.penup()
-t.goto(xmin, ymin)
-t.pendown()
-for _ in range(2):
-    t.forward(xmax - xmin)
-    t.left(90)
-    t.forward(ymax - ymin)
-    t.left(90)
-# Original line
-x1, y1, x2, y2 = -150, -100, 200, 150
-t.color("red")
-t.penup()
-t.goto(x1, y1)
-t.pendown()
-t.goto(x2, y2)
+response.setContentType("text/html;charset=UTF-8");
 
-# ---- LINE CLIPPING ----
-if x1 < xmin:
-    y1 += (y2 - y1) * (xmin - x1) / (x2 - x1)
-    x1 = xmin
+PrintWriter out = response.getWriter();
 
-if x2 > xmax:
-    y2 += (y2 - y1) * (xmax - x2) / (x2 - x1)
-    x2 = xmax
+String user = request.getParameter("username");
+String pass = request.getParameter("password");
 
-if y1 < ymin:
-    x1 += (x2 - x1) * (ymin - y1) / (y2 - y1)
-    y1 = ymin
-if y2 > ymax:
-    x2 += (x2 - x1) * (ymax - y2) / (y2 - y1)
-    y2 = ymax
-# Clipped line
-t.color("green")
-t.penup()
-t.goto(x1, y1)
-t.pendown()
-t.goto(x2, y2)
-turtle.done()
-PRACTICAL NO. 9 – FILL ALGORITHMS 
-A) Flood Fill
-import turtle
-t = turtle.Turtle()
-# Shape
-t.penup()
-t.goto(-50, -50)
-t.pendown()
-for _ in range(4):
-    t.forward(100)
-    t.left(90)
-# Fill (simulated)
-t.penup()
-t.goto(0, 0)
-t.fillcolor("yellow")
-t.begin_fill()
-t.circle(40)
-t.end_fill()
-turtle.done()
+out.println("<html>");
+out.println("<head><title>Login Result</title></head>");
+out.println("<body>");
 
-B) Boundary Fill 
+if("admin".equals(user) && "1234".equals(pass))
+{
+out.println("<h2>Welcome " + user + "</h2>");
+}
+else
+{
+out.println("<h2>Login Failed!</h2>");
+}
 
-import turtle
-t = turtle.Turtle()
-t.color("black", "green")
-t.begin_fill()
-# Square
-t.penup()
-t.goto(-60, -60)
-t.pendown()
-for _ in range(4):
-    t.forward(120)
-    t.left(90)
-t.end_fill()
-turtle.done() 
-(MOVING CAR) 
-import turtle
-import time
-t = turtle.Turtle()
-t.hideturtle()
-t.speed(0)
-def car(x):
-    t.penup()
-    t.goto(x, -50)
-    t.pendown()
-    # Car body
-    for _ in range(2):
-        t.forward(100)
-        t.left(90)
-        t.forward(40)
-        t.left(90)
-    # Wheels
-    t.penup()
-    t.goto(x + 20, -50)
-    t.dot(20)
-    t.goto(x + 80, -50)
-    t.dot(20)
-# Animation loop
-for x in range(-200, 200, 10):
-    t.clear()
-    car(x)
-    time.sleep(0.05)
-turtle.done()
-SOLAR SYSTM
+out.println("</body>");
+out.println("</html>");
 
+}
+}
+ 
+### Write a servlet program to demonstrate the Servlet Life Cycle.
+LifeCycleServlet.java
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+@WebServlet("/LifeCycleServlet")
 
+public class LifeCycleServlet extends HttpServlet {
 
-import turtle, math, time
-screen = turtle.Screen()
-screen.bgcolor("black")
-sun = turtle.Turtle(shape="circle")
-sun.color("yellow")
-sun.shapesize(2)
-sun.penup()
-planets_data = [
-    ("gray", 0.4, 50, 2),
-    ("orange", 0.6, 80, 1.7),
-    ("blue", 0.7, 110, 1),   # Earth
-    ("red", 0.5, 140, 0.8),
-    ("brown", 1.2, 190, 0.5),
-    ("gold", 1.0, 230, 0.4),
-    ("lightblue", 0.8, 270, 0.3),
-    ("darkblue", 0.8, 310, 0.2)
-]# Create planet turtles
-planets = []
-for color, size, _, _ in planets_data:
-    t = turtle.Turtle(shape="circle")
-    t.color(color)
-    t.shapesize(size)
-    t.penup()
-    planets.append(t) # Moon
-moon = turtle.Turtle(shape="circle")
-moon.color("white")
-moon.shapesize(0.3)
-moon.penup()# Draw orbits
-orbit = turtle.Turtle()
-orbit.hideturtle()
-orbit.color("white")
-orbit.penup()
-orbit.speed(0)
-for _, _, r, _ in planets_data:
-    orbit.goto(0, -r)
-    orbit.pendown()
-    orbit.circle(r)
-    orbit.penup()# Animation
-angle = 0
-while True:
-    for p, (_, _, r, speed) in zip(planets, planets_data):
-        x = r * math.cos(angle * speed)
-        y = r * math.sin(angle * speed)
-        p.goto(x, y) # Moon around Earth (3rd planet)
-    ex, ey = planets[2].xcor(), planets[2].ycor()
-    moon.goto(ex + 20 * math.cos(angle*4), ey + 20 * math.sin(angle*4))   /angle += 0.03  / time.sleep(0.02)
-SNOWFALL
-import turtle
-import random
-# Screen setup
-screen = turtle.Screen()
-screen.bgcolor("black")
-screen.title("Snowfall Animation")
-screen.setup(width=800, height=600)
-screen.tracer(0)
-# Create snowflakes
-snowflakes = []
-for _ in range(150):
-    snow = turtle.Turtle()
-    snow.shape("circle")
-    snow.color("white")
-    snow.shapesize(0.3)
-    snow.penup()
-    snow.speed(0)
-    x = random.randint(-390, 390)
-    y = random.randint(-290, 290)
-    snow.goto(x, y)
-    snowflakes.append(snow)
-# Animation loop
-while True:
-    for snow in snowflakes:
-        x, y = snow.position()
-        # Falling speed (slightly random for natural effect)
-        y -= random.randint(1, 3)
-        # Reset to top if snow reaches bottom
-        if y < -300:
-            y = 300
-            x = random.randint(-390, 390)
-        snow.goto(x, y)
-    screen.update()
+    // Constructor
+    public LifeCycleServlet() {
+        System.out.println("I am from default constructor");
+    }
 
+    // init method
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        System.out.println("I am from init method");
+    }
 
+    // doGet method
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
 
-SMILEY FACE import turtle
-import time
-screen = turtle.Screen()
-screen.bgcolor("white")
-screen.title("Smiley Blink")
-screen.tracer(0)
+        res.setContentType("text/html");
+        PrintWriter pw = res.getWriter();
 
-t = turtle.Turtle()
-t.hideturtle()
-t.speed(0)# Draw Face
-t.penup()
-t.goto(0, -150)
-t.pendown()
-t.color("yellow")
-t.begin_fill()
-t.circle(150)
-t.end_fill()# Draw Smile
-t.penup()
-t.goto(-80, -20)
-t.setheading(-60)
-t.pendown()
-t.color("black")
-t.width(5)
-t.circle(100, 120)
-t.width(1)# Eye function
-def eye(x, blink=False):
-    t.penup()
-    t.goto(x, 60)
-    t.setheading(0)
-    t.pendown()
-    if blink:
-        t.width(5)
-        t.forward(40)
-        t.width(1)
-    else:
-        t.begin_fill()
-        t.circle(20)
-        t.end_fill()
-while True: # Open eyes
-    t.color("black")
-    eye(-50, False)
-    eye(50, False)
-    screen.update()
-    time.sleep(1) # Erase open eyes
-    t.color("yellow")
-    eye(-50, False)
-    eye(50, False)  # Draw closed eyes
-    t.color("black")
-    eye(-50, True)
-    eye(50, True)
-    screen.update()
-    time.sleep(0.2)  # Erase closed eyes
-    t.color("yellow")
-    eye(-50, True)
-    eye(50, True)                      
- BOUNCING BALL
-import turtle
-import time
+        pw.println("<html>");
+        pw.println("<head><title>Servlet Life Cycle</title></head>");
+        pw.println("<body>");
+        pw.println("<h2>I am from doGet method</h2>");
+        pw.println("</body>");
+        pw.println("</html>");
 
-# Screen setup
-screen = turtle.Screen()
-screen.bgcolor("black")
-screen.title("Bouncing Ball Animation")
-screen.setup(width=800, height=600)
-screen.tracer(0)
+        pw.close();
+    }
 
-# Ball setup
-ball = turtle.Turtle()
-ball.shape("circle")
-ball.color("cyan")
-ball.penup()
-ball.goto(0, 0)
+    // destroy method
+    @Override
+    public void destroy() {
+        System.out.println("I am from destroy method");
+    }
+} 
+## Write a Java Swing program to calculate square and cube of a number taken from the user.
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-# Movement speed
-dx = 3
-dy = 3
+public class SquareCubeApp extends JFrame implements ActionListener {
 
-# Animation loop
-while True:
-    ball.setx(ball.xcor() + dx)
-    ball.sety(ball.ycor() + dy)
+JTextField t1, t2;
+JComboBox cb;
+JButton b1, b2;
 
-    # Bounce from left & right walls
-    if ball.xcor() > 380 or ball.xcor() < -380:
-        dx = -dx
+SquareCubeApp() {
 
-    # Bounce from top & bottom walls
-    if ball.ycor() > 280 or ball.ycor() < -280:
-        dy = -dy
+setLayout(new FlowLayout());
 
-    screen.update()
-    time.sleep(0.01)
+add(new JLabel("Enter Number"));
+t1 = new JTextField(10);
+add(t1);
 
+add(new JLabel("Choose"));
+cb = new JComboBox(new String[]{"Square","Cube"});
+add(cb);
 
+add(new JLabel("Result"));
+t2 = new JTextField(10);
+t2.setEditable(false);
+add(t2);
 
+b1 = new JButton("Calculate");
+b2 = new JButton("Clear");
 
-MOVING CAR:import turtle
-import time
+add(b1);
+add(b2);
 
-# Screen setup
-screen = turtle.Screen()
-screen.bgcolor("white")
-screen.setup(600, 300)
-screen.title("Moving Car Animation")
-screen.tracer(0)
+b1.addActionListener(this);
+b2.addActionListener(this);
 
-# Car body
-car = turtle.Turtle()
-car.penup()
-car.speed(0)
-car.shape("square")
-car.shapesize(2, 4)
-car.color("red")
+setTitle("Square Cube Calculator");
+setSize(300,200);
+setVisible(true);
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+}
 
-# Wheel 1
-wheel1 = turtle.Turtle()
-wheel1.penup()
-wheel1.speed(0)
-wheel1.shape("circle")
-wheel1.color("black")
+public void actionPerformed(ActionEvent e){
 
-# Wheel 2
-wheel2 = turtle.Turtle()
-wheel2.penup()
-wheel2.speed(0)
-wheel2.shape("circle")
-wheel2.color("black")
+if(e.getSource()==b1){
 
-x = -300
+int x = Integer.parseInt(t1.getText());
+int y;
 
-# Animation loop
-while True:
-    car.goto(x, 0)
-    wheel1.goto(x - 30, -25)
-    wheel2.goto(x + 30, -25)
+if(cb.getSelectedItem().equals("Square"))
+y = x*x;
+else
+y = x*x*x;
 
-    x += 3
+t2.setText(String.valueOf(y));
+}
+else{
+t1.setText("");
+t2.setText("");
+}
+}
 
-    if x > 320:
-        x = -320
+public static void main(String args[]){
+new SquareCubeApp();
+}
+}
+## Aim: Write a java swing program for creating registration form
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-    screen.update()
-    time.sleep(0.02)
+public class RegistrationFormApp extends JFrame implements ActionListener {
 
+JLabel lblname,lblfname,lblphone,lblemail,lblgender,lblcity,lblAddress;
+JTextField name_txt,fname_txt,phone_txt,email_txt;
+JRadioButton male,female;
+JComboBox jcbcity;
+JTextArea add_txtArea,output_txtArea;
+JCheckBox chkbox;
+JButton submit_btn;
 
- 
- 
- 
+RegistrationFormApp() {
+
+setLayout(null);
+
+JLabel heading_lbl=new JLabel();
+heading_lbl.setBounds(250,5,300,40);
+heading_lbl.setText("<html><u><b>Registration Form</b></u></html>");
+
+lblname=new JLabel("Name:");
+lblname.setBounds(50,80,100,30);
+
+name_txt=new JTextField();
+name_txt.setBounds(180,80,180,30);
+
+lblfname=new JLabel("Fathers name :");
+lblfname.setBounds(50,120,150,30);
+
+fname_txt=new JTextField();
+fname_txt.setBounds(180,120,180,30);
+
+lblgender=new JLabel("Gender:");
+lblgender.setBounds(50,160,150,30);
+
+male=new JRadioButton("Male");
+male.setBounds(180,160,70,30);
+
+female=new JRadioButton("Female");
+female.setBounds(280,160,80,30);
+
+ButtonGroup gender_grp=new ButtonGroup();
+gender_grp.add(male);
+gender_grp.add(female);
+
+lblcity =new JLabel("City");
+lblcity.setBounds(50,200,100,30);
+
+String city[]={"Mumbai","Thane","Pune"};
+jcbcity=new JComboBox(city);
+jcbcity.setBounds(180,200,120,30);
+
+lblAddress =new JLabel("Address :");
+lblAddress.setBounds(50,240,100,30);
+
+add_txtArea= new JTextArea();
+add_txtArea.setBounds(180,240,180,100);
+
+lblphone=new JLabel("Phone No. : ");
+lblphone.setBounds(50,350,100,30);
+
+phone_txt=new JTextField();
+phone_txt.setBounds(180,350,180,30);
+
+lblemail=new JLabel("Email : ");
+lblemail.setBounds(50,390,100,30);
+
+email_txt=new JTextField();
+email_txt.setBounds(180,390,180,30);
+
+chkbox=new JCheckBox("I accept the terms and conditions");
+chkbox.setBounds(50,430,300,30);
+
+submit_btn=new JButton("Submit");
+submit_btn.setBounds(180,500,120,40);
+
+output_txtArea=new JTextArea();
+output_txtArea.setBounds(420,80,300,350);
+
+add(heading_lbl);
+add(lblname); add(name_txt);
+add(lblfname); add(fname_txt);
+add(lblgender); add(male); add(female);
+add(lblcity); add(jcbcity);
+add(lblAddress); add(add_txtArea);
+add(lblphone); add(phone_txt);
+add(lblemail); add(email_txt);
+add(chkbox);
+add(submit_btn);
+add(output_txtArea);
+
+submit_btn.addActionListener(this);
+
+setSize(800,700);
+setVisible(true);
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+}
+
+public void actionPerformed(ActionEvent e) {
+
+if(chkbox.isSelected()) {
+
+String name=name_txt.getText();
+String fname=fname_txt.getText();
+
+String gender="Male";
+if(female.isSelected())
+gender="Female";
+
+String city_name=(String)jcbcity.getSelectedItem();
+String add=add_txtArea.getText();
+String phone=phone_txt.getText();
+String email=email_txt.getText();
+
+output_txtArea.setText(
+"Name : " + name +
+"\nFather's Name : " + fname +
+"\nGender : " + gender +
+"\nCity : " + city_name +
+"\nAddress : " + add +
+"\nPhone no : " + phone +
+"\nEmail : " + email
+);
+}
+else{
+output_txtArea.setText("Please accept the terms and condition");
+}
+}
+
+public static void main(String args[]) {
+new RegistrationFormApp();
+}
+} 
+# Aim : Write a servlet program to calculate the product of two numbers.
+<html>
+<head>
+<title>Product</title>
+</head>
+
+<body>
+
+<form action="test" method="post">
+
+Enter x
+<input type="text" name="t1">
+<br><br>
+
+Enter y
+<input type="text" name="t2">
+<br><br>
+
+<input type="submit" value="Product">
+
+</form>
+
+</body>
+</html>          test.java (Servlet)
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/test")
+
+public class test extends HttpServlet {
+
+protected void doPost(HttpServletRequest req, HttpServletResponse res)
+throws ServletException, IOException {
+
+res.setContentType("text/html");
+PrintWriter pw = res.getWriter();
+
+int x = Integer.parseInt(req.getParameter("t1"));
+int y = Integer.parseInt(req.getParameter("t2"));
+
+int z = x * y;
+
+pw.println("<html>");
+pw.println("<body>");
+pw.println("<h2>Product of " + x + " and " + y + " is " + z + "</h2>");
+pw.println("</body>");
+pw.println("</html>");
+}
+}
+
+ 
+#### dateTime.jsp
+<%@ page contentType="text/html" import="java.util.*" %>
+<html>
+<head>
+<meta http-equiv="refresh" content="1">
+<title>Date Time</title>
+</head>
+
+<body>
+
+<%
+Date d = new Date();
+out.println(d.toString());
+%>
+
+</body>
+</html>
+
+## Write a JavaBean program to display current date and time.
+GetTime.jsp
+<%@page contentType="text/html" %>
+<%@page pageEncoding="UTF-8" %>
+
+<html>
+<head>
+<title>Current Time</title>
+</head>
+
+<body>
+
+<jsp:useBean id="cal" class="GetTime.CalendarBean1"/>
+
+<pre>
+Time:   <jsp:getProperty name="cal" property="time"/>
+
+Hour:   <jsp:getProperty name="cal" property="hour"/>
+
+Minute: <jsp:getProperty name="cal" property="minute"/>
+
+Second: <jsp:getProperty name="cal" property="second"/>
+</pre>
+
+</body>
+</html>
+
+2️⃣ CalendarBean1.java
+package GetTime;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class CalendarBean1 {
+
+private Calendar calendar;
+
+public CalendarBean1(){
+calendar = Calendar.getInstance();
+}
+
+public Date getTime(){
+return calendar.getTime();
+}
+
+public int getHour(){
+return calendar.get(Calendar.HOUR_OF_DAY);
+}
+
+public int getMinute(){
+return calendar.get(Calendar.MINUTE);
+}
+
+public int getSecond(){
+return calendar.get(Calendar.SECOND);
+}
+
+}
